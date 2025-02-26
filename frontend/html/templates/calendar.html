@@ -1,0 +1,46 @@
+<div class="calendar-fixer">
+    <h2 class="section-title">Select a Date for Your Reservation</h2>
+    
+    <div id="calendar-main">
+        <div id="calendar-header">
+            <button id="prev-month" onclick="setCalendarVisibleViaButton(false)">&#9665;</button>
+            <h3 id="current-month"></h3>
+            <button id="next-month" onclick="setCalendarVisibleViaButton(true)">&#9655;</button>
+        </div>
+        <div class="days-of-the-week">
+            <div class="day-of-the-week">hétfő</div>
+            <div class="day-of-the-week">kedd</div>
+            <div class="day-of-the-week">szerda</div>
+            <div class="day-of-the-week">csütörtök</div>
+            <div class="day-of-the-week">péntek</div>
+            <div class="day-of-the-week">szombat</div>
+            <div class="day-of-the-week">vasárnap</div>
+        </div>
+        <div id="calendar-container">
+    
+        </div>
+    </div>
+    
+    
+    
+    
+    <form id="reservation-form">
+        
+        <div class="rando">
+            <h2>válassza ki foglalásának idejét!</h2>
+            <h4>foglalása a kiválasztott időtől kezdve egy óra hosszáig tart</h4>
+
+            <label for="date-input">kiválasztott dátum:</label>
+            <div id="date-input"></div>
+
+            <div class="rando-menu">
+                <button id="rando-left" onclick="event.preventDefault();r.set(true)">előbb</button>
+                <div id="rando-output"></div>
+                <button id="rando-right" onclick="event.preventDefault();r.set(false)">később</button>
+                <button class="rando-reset" onclick="event.preventDefault();r.reset('rando-output')">reset</button>
+            </div>
+            <button type="submit">Book Reservation</button>
+        </div>
+
+    </form>
+</div>

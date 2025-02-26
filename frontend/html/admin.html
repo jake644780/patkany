@@ -1,0 +1,562 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500&display=swap" rel="stylesheet">
+</head>
+<body>
+
+    <!-- Sidebar -->
+    <div class="sidebar">
+        <h2>Admin Panel</h2>
+        
+        <a href="/"><button class="admin-fetch" id="go-back" style="text-decoration: none;">
+            <img src="../images/go.png" alt="">Back</button></a>
+        <button id="users" class="admin-fetch">Users</button>
+        <button id="reviews" class="admin-fetch">Reviews</button>
+        <button id="reservations" class="admin-fetch">Reservations</button>
+    </div>
+
+    <!-- Main Content Area -->
+    <div class="main-content">
+        <div class="header">
+            <div class="logo">Admin Dashboard</div>
+            <div class="search-bar">
+                <input type="text" placeholder="Search..." id="search-bar">
+            </div>
+        </div>
+
+
+        <div class="content">
+            <h1>Welcome to the Admin Dashboard</h1>
+            <p>Click the buttons on the left to fetch data for users, reviews, or reservations.</p>
+            <!-- Output for data -->
+            <div id="output">Data will be displayed here.</div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <div class="footer">
+        <p>&copy; 2025 Admin Panel. All Rights Reserved.</p>
+    </div>
+
+
+</body>
+</html>
+<script>
+    //DATA
+    let ids = [
+        "users",
+        "reviews",
+        "reservations",
+    ];
+    let dataList = [];
+
+
+
+    //GETTING ALL DATA
+    // for (let i = 0; i < 3; i++) {
+    //     fetch(`http://localhost:8081/getall/${ids[i]}`)
+    //         .then(response => response.json())
+    //         .then(data => {
+    //             console.log(data);
+    //             dataList.push(data);
+    //         })
+    //         .catch(error => {console.error('Error fetching data:', error);});
+    // }
+
+    let fetchPromises = [];
+
+for (let i = 0; i < 3; i++) {
+    let fetchPromise = fetch(`http://localhost:8081/getall/${ids[i]}`)
+        .then(response => response.json())
+        .then(data => {
+            console.log(data);
+            dataList.push(data);
+        })
+        .catch(error => {console.error('Error fetching data:', error);});
+
+    fetchPromises.push(fetchPromise);  // Store the promise
+}
+
+// Wait for all fetch requests to finish before continuing
+Promise.all(fetchPromises).then(() => {
+    // Code here will run after all fetch requests are complete
+    console.log("All data fetched.");
+    // Continue with the rest of your code...
+});
+
+
+    Promise.all(fetchPromises).then(() => {
+        console.log("All data fetched.");
+    });
+    
+    let buttons = document.querySelectorAll(".admin-fetch");
+    for (let i = 0; i < buttons.length; i++) buttons[i].addEventListener('click', ()=>{
+        sessionStorage.setItem("last", buttons[i].id);
+        if(dataList[idGetting(buttons[i].id)]) handleDisplay(dataList[idGetting(buttons[i].id)], buttons[i].id);
+    });
+
+    console.log(dataList);
+
+
+
+    //FUN
+    function handleDisplay(data, buttonId){
+        const pressed = document.getElementById(sessionStorage.getItem("last"));
+        let buttons = document.querySelectorAll('.admin-fetch');
+        buttons.forEach((button)=>{
+            button.classList.remove("pressed");
+        });
+        pressed.classList.toggle("pressed");
+        const outputDiv = document.getElementById('output');
+        let inner = "";
+        if (buttonId === "users") for (let i = 0; i < data.length; i++) if (sessionStorage.getItem('id') != data[i].id)inner += `
+            <div class="user-card" name="${data[i].id}${data[i].username}${data[i].email}">
+                <div class="user-info">
+                    <h3>user ${data[i].id} <class class="special">${data[i].username}</class></h3>
+                    <p class="email"><span class="special">${data[i].email}</span></p>
+                </div>
+                <div class="action-buttons">
+                    <button onclick="deleteThis(${data[i].id}, 'user')" class="delete-btn">Delete</button>                        
+                </div>
+            </div>
+        `;
+        else inner += `
+            <div class="user-card" name="${data[i].id}${data[i].username}${data[i].email}">
+                <div class="user-info">
+                    <h3>user ${data[i].id} <class class="you">${data[i].username}</class></h3>
+                    <p class="email"><span class="you">${data[i].email}</span></p>
+                </div>
+                <div class="action-buttons">
+                    <div class="delete-btn" id="you">this is you</div>
+                </div>
+            </div>
+        `;
+        else if (buttonId === "reviews") for (let i = 0; i < data.length; i++) {
+            const value = data[i].rating; 
+            console.log(value);
+            
+            let stars = "";
+            const before = Math.floor(value/2);
+            const isOdd = value % 2 === 1;
+
+            for (let i = 0; i < before; i++) stars += `
+            <img class="star" src="../images/star.png" alt="">
+            `;
+
+            stars += isOdd? `
+            <img class="star" src="../images/half-star.png" alt="">
+            `:"";
+
+
+            for (let i = 0; i < (5 - before) - (isOdd?1:0); i++) stars += `
+            <img class="star" src="../images/empty-star.png" alt="">
+            `;
+                
+
+            
+            inner += `
+            <div class="user-card" name="${data[i].id}${data[i].user_id}${data[i].review}${data[i].rating}">
+                <div class="user-info">
+                    <h3>review ${data[i].id}<br><span class="special">${dataList[0][findUserById(data[i].user_id)].username}</span></h3>
+                    <p class="email"><br><span class="special">${data[i].review}</span></p>
+                </div>
+                <div class="action-buttons">
+                    <button onclick="deleteThis(${data[i].id}, 'review')" class="delete-btn">Delete</button>                        
+                </div>
+                <div class="stars">
+                    ${stars}
+                </div>
+            </div>
+            `;
+        }
+        else if (buttonId === "reservations") for (let i = 0; i < data.length; i++) inner += `
+            <div class="user-card" name="${data[i].id}${data[i].user_id}${data[i].reserved}">
+                <div class="user-info">
+                    <h3>${data[i].id}: ${dataList[0][findUserById(data[i].user_id)].username}</h3>
+                    <p class="email">${timeFormatting(data[i].reserved)}</p>
+                </div>
+                <div class="action-buttons">
+                    <button onclick="deleteThis(${data[i].id}, 'reservation')" class="delete-btn">Delete</button>
+                </div>
+            </div>
+        `;
+        
+        outputDiv.innerHTML = inner;
+        lookForUndefined();
+    }
+
+
+    function idGetting(stringy){
+        for (let i = 0; i < ids.length; i++) if(ids[i] === stringy) return i;
+        return -1;
+    }
+
+    function timeFormatting(time){
+        /*const regex = /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}[+-]\d{2}:\d{2}$/
+        if (!(regex.test(time))) return "invalid time";*/
+        return time.split("+")[0].replace("-", ":").replace("-", ":").replace("T", ":");
+    }
+
+    function findUserById(userId){
+        userList = dataList[0];
+        for (let i = 0; i < userList.length; i++) if(userList[i].id === userId) return i;
+        return 0;
+    }
+
+
+    async function deleteThis(deletedId, typeOf) {
+        try {
+            const response = await fetch(`http://localhost:8081/delete`, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({
+                    type: typeOf,
+                    id: deletedId,
+                })
+            });
+
+            if (!response.ok) throw new Error(`HTTP error! Status: ${response.status}`);
+
+            const data = await response.json().catch(() => null);
+            if (data?.error) throw new Error(data.error);
+
+            console.log("Item deleted successfully");
+            sessionStorage.setItem("loadPlease", (typeOf + "s"));
+            window.location.reload();
+
+        } catch (error) {
+            console.error("Error deleting item:", error.message);
+        }
+    }
+
+
+    document.addEventListener("DOMContentLoaded", function() {
+    document.getElementById('search-bar').addEventListener("input", () => {
+        const searchFor = document.getElementById('search-bar').value.toLowerCase();
+        let cards = document.querySelectorAll('.user-card');
+        for (let i = 0; i < cards.length; i++) {
+            // Search within the entire outerHTML (tag name + attributes + inner HTML)
+            const cardContent = cards[i].outerHTML.toLowerCase();
+            cards[i].style.display = (cardContent.includes(searchFor)) ? "flex" : "none";
+        }
+    });
+
+
+     for (let i = 0; i < buttons.length; i++) buttons[i].addEventListener('click', ()=>{
+        const searchFor = document.getElementById('search-bar').value.toLowerCase();
+        let cards = document.querySelectorAll('.user-card');
+        for (let i = 0; i < cards.length; i++) {
+            // Search within the entire outerHTML (tag name + attributes + inner HTML)
+            const cardContent = cards[i].outerHTML.toLowerCase();
+            cards[i].style.display = (cardContent.includes(searchFor)) ? "flex" : "none";
+        }
+     });
+});
+
+    function lookForUndefined(){
+        let cards = document.querySelectorAll(".user-card");
+        for (let i = 0; i < cards.length; i++) if (cards[i].innerHTML.includes("undefined")) window.location.reload()
+    }
+
+
+
+
+</script>
+<style>
+        
+    /* Global reset */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* Body styles */
+body {
+    font-family: 'Roboto', sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f4f7fc;
+    display: flex;
+    min-height: 100vh;
+}
+
+/* Sidebar styles */
+.sidebar {
+    width: 240px;
+    background-color: #2c3e50;
+    color: #fff;
+    padding: 20px;
+    height: 100vh;
+    position: fixed;
+    transition: width 0.3s ease;
+}
+/* Default button styles */
+.sidebar button {
+    width: 100%;
+    padding: 10px;
+    background-color: #3498db;
+    color: white;
+    border: none;
+    font-size: 16px;
+    border-radius: 5px;
+    transition: background-color 0.3s ease;
+
+}
+
+/* Hover state for button */
+.sidebar button:hover {
+    background-color: #2980b9;
+}
+
+/* More specific pressed button */
+.sidebar button.pressed {
+    background-color: #444;
+}
+
+/* Hover state for pressed button */
+.sidebar button.pressed:hover {
+    background-color: #444;
+}
+
+/* Main Content */
+.main-content {
+    margin-left: 240px;
+    padding: 30px;
+    width: 100%;
+    transition: margin-left 0.3s ease;
+}
+
+/* Header */
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #34495e;
+    padding: 15px 30px;
+    color: #ecf0f1;
+}
+
+.header .search-bar input {
+    padding: 5px 10px;
+    border-radius: 4px;
+    border: none;
+    outline: none;
+    width: 200px;
+}
+
+.footer {
+    text-align: center;
+    padding: 10px;
+    background-color: #2c3e50;
+    color: #ecf0f1;
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+}
+
+/* Button Styling */
+.admin-fetch {
+    background-color: #3498db;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    margin: 10px 0;
+    cursor: pointer;
+    font-size: 16px;
+    border-radius: 5px;
+    transition: background-color 0.3s ease;
+}
+
+.admin-fetch:hover {
+    background-color: #2980b9;
+}
+
+/* Output area styling */
+#output {
+    margin-top: 20px;
+    background-color: #ecf0f1;
+    padding: 20px;
+    border-radius: 8px;
+    height: 600px;
+    overflow-y: auto;
+    white-space: pre-wrap;
+    word-wrap: break-word;
+}
+
+/* User card styling */
+.user-card {
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    margin: 15px 0;
+    padding: 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    transition: transform 0.3s ease;
+}
+
+.user-card:hover {
+    transform: translateY(-5px);
+}
+
+.user-info {
+    display: flex;
+    width: 30%;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.user-info h3 {
+    margin: 0;
+    font-size: 20px;
+    color: #2c3e50;
+}
+
+.user-info p {
+    margin: 5px 0;
+    color: #7f8c8d;
+}
+
+.user-info .email {
+    font-weight: bold;
+}
+
+.action-buttons {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.action-buttons button, #you {
+    color: white;
+    border: none;
+    padding: 8px 16px;
+    margin: 5px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    font-size: 14px;
+    width: 120px;
+    text-align: center;
+}
+
+.delete-btn {
+    background-color: #e74c3c;
+}
+
+.delete-btn:hover {
+    background-color: #c0392b;
+}
+
+#you {
+    background-color: green;
+}
+
+#you:hover {
+    background-color: darkgreen;
+}
+
+.admin-toggle {
+    display: flex;
+    align-items: center;
+}
+
+.admin-toggle label {
+    font-size: 16px;
+    color: #7f8c8d;
+    margin-right: 10px;
+}
+
+.stars{
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-end;
+    gap: calc(100%/25);
+}
+
+.star{
+    object-fit: fill;
+    height: calc(100%/7);
+    width: calc(100%/7);
+}
+
+/* Responsive Layouts */
+@media (max-width: 1024px) {
+    .sidebar {
+        width: 200px;
+    }
+
+    .main-content {
+        margin-left: 200px;
+    }
+
+    .header .search-bar input {
+        width: 150px;
+    }
+
+    .user-card {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .user-info {
+        width: 100%;
+    }
+
+    .action-buttons {
+        width: 100%;
+    }
+}
+
+@media (max-width: 768px) {
+    /* Sidebar collapse on small screens */
+    .sidebar {
+        width: 0;
+        padding: 0;
+        display: none;
+    }
+
+    .main-content {
+        margin-left: 0;
+        padding: 20px;
+    }
+
+    .header .search-bar input {
+        width: 100%;
+    }
+
+    .admin-fetch {
+        width: 100%;
+    }
+
+    .user-card {
+        width: 100%;
+    }
+
+    .user-info, .action-buttons {
+        width: 100%;
+        align-items: flex-start;
+    }
+
+    .user-card {
+        flex-direction: column;
+        padding: 15px;
+    }
+
+    /* Footer */
+    .footer {
+        position: relative;
+    }
+}
+
+
+
+</style>
