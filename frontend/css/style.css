@@ -86,7 +86,7 @@ html, body{
     color: #63523e;
     border-radius: 5px;
     padding: 5px 10px;
-    transition: background-color 0.3s;
+    transition: background-color 0.3s ease;
 }
 
 .auth:hover{
@@ -97,6 +97,7 @@ html, body{
 
 .admin-cucc{
     background-color: red;
+    text-decoration: none;
 }
 
 
