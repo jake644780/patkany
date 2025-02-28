@@ -1,31 +1,45 @@
 TODO                                      
 
 WEBSITE{
-    RESPONSIVENESS(NO)              .ják
-    szövegek                        .madrász
+    RESPONSIVENESS(NO)                                                              .ják
+    szövegek                                                                        .madrász
 }
 SERVER{
-    ADDS                            .
-    DNS                             .
-    DHCP                            .
-    FTP/TFTP                        .
-}
-DOKSI{
-    hálózat(minden)                 .ferdi/madrász
-    WEBSITE{
-        front                       .madrász/jék
-        back                        .madrász
-        SQL                         .dzshjéjk
+    ADDS{
+        template user                                                               .pipa
+        12-15 felhasználó                                                           .pipa
+        3-5 csoport                                                                 .pipa
+        2-10 OU                                                                     .pipa
+        Minden gép (kliens) regisztrálása az AD-ben                                 .pipa?FERDI
+        4-10 GPO implementálása                                                     .pipa
+        Felhasználók idejének korlátozása                                           .pipa
+        jogosultságuk korlátozása a céges policy szerint (maguk határozzák meg)     .FERDI
+        Home könyvtár                                                               .pipa?FERDI
+        felcsatolt meghajtók létrehozása                                            .FERDIIIIIIIIIIIII
     }
-    szerver                         .
-    minden más                      .madrász
+    DNS                                                                             .pipa?
+    DHCP                                                                            .FERDI
+    FTP/TFTP                                                                        .FERDI
 }
 TESTING{
-    WEBSITE                         .
-    irl hálózat/w SERVER            .
+    WEBSITE                                                                         .ferdi
+    irl hálózat/w SERVER                                                            .mindenki
+    csidejó                                                                         .mindenki
 }
 
 
+DOKSI{
+    hálózat(minden)                                                                 .ferdi/madrász
+    WEBSITE{
+        front                                                                       .madrász/jék
+        back                                                                        .madrász
+        SQL                                                                         .dzshjéjk
+    }
+    szerver
+    minden más                                                                      .madrász
+}
+
+-----------------------------------------------------------------------------------------------------------------------------------------------
 
 dokumentáció{
     bevezető{
