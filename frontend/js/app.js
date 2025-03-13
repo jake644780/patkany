@@ -113,7 +113,6 @@ for (let i = 0; i < 3; i++) {
         fetch(`http://localhost:8081/getall/${ids[i]}`)
             .then(response => response.json())
             .then(data => {
-                console.log(data);
                 window.dataList[i] = data; // Store fetched data at the correct index
             })
             .catch(error => console.error('Error fetching data:', error))
