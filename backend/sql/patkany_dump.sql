@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Mar 13, 2025 at 06:47 PM
+-- Generation Time: Mar 13, 2025 at 07:18 PM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -71,6 +71,14 @@ CREATE TABLE `reservations` (
   `reserved` datetime NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
+--
+-- Dumping data for table `reservations`
+--
+
+INSERT INTO `reservations` (`id`, `user_id`, `reserved`) VALUES
+(7, 2, '2025-03-21 06:17:59'),
+(8, 2, '2025-03-20 12:57:01');
+
 -- --------------------------------------------------------
 
 --
@@ -94,7 +102,9 @@ INSERT INTO `reviews` (`id`, `user_id`, `rating`, `review`) VALUES
 (8, 2, 5, 'lorem ispum az nagyon nagyon jó kettőspont csukószárójel'),
 (10, 2, 10, 'dfsfsd'),
 (12, 2, 10, 'dsadsa'),
-(13, 2, 10, 'dsadsasadsada');
+(13, 2, 10, 'dsadsasadsada'),
+(14, 2, 4, 'sadsadsada'),
+(15, 2, 4, 'sadsadsadadasdad');
 
 -- --------------------------------------------------------
 
@@ -171,13 +181,13 @@ ALTER TABLE `permissions`
 -- AUTO_INCREMENT for table `reservations`
 --
 ALTER TABLE `reservations`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
 
 --
 -- AUTO_INCREMENT for table `reviews`
 --
 ALTER TABLE `reviews`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
 
 --
 -- AUTO_INCREMENT for table `users`
