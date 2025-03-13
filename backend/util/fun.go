@@ -136,23 +136,6 @@ func InsertWithErrorCheck(c *gin.Context, data any)(state bool){
 
 }
 
-// func ParseExtendedTime(input string) (time.Time, error) {
-// 	// Always use Budapest time zone
-// 	loc, err := time.LoadLocation("Europe/Budapest")
-// 	if err != nil {return time.Time{}, errors.New("location unknown")}
-// 	parts := strings.Split(input, ":")
-// 	log.Printf("inputted: %v\nparts len: %v", input,len(parts))
-// 	if len(parts) != 6 {return time.Time{}, errors.New("invalid data")}
-
-// 	var times [6]int
-// 	for i := 0; i < 6; i++ {
-// 		times[i], err = strconv.Atoi(parts[i])
-// 		if err != nil{return time.Time{}, errors.New("a part of the data is invalid")}
-// 	}
-// 	// Construct the time object in Budapest time
-// 	return time.Date(times[0], time.Month(times[1]), times[2], times[3], times[4], times[5], 0, loc), nil
-// }
-
 func ParseExtendedTime(input string) (time.Time, error) {
 	// Always use UTC time zone
 	loc := time.UTC
