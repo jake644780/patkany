@@ -330,12 +330,12 @@ function POSTdata(id){
 
 function setLoggedInButtons(loggedIn){
     let out = [
-        createElementFromHTML(`<a href="#" class="nav-element auth" onclick="display(this)" id="login">Login</a>`),
-        createElementFromHTML(`<a href="#" class="nav-element auth" onclick="display(this)" id="register">Register</a>`),
+        createElementFromHTML(`<a href="#" class="nav-element auth" onclick="display(this)" id="login">Bejelentkezés</a>`),
+        createElementFromHTML(`<a href="#" class="nav-element auth" onclick="display(this)" id="register">Regisztráció</a>`),
     ];
     let notOut = [
-        createElementFromHTML(`<a href="#" class="nav-element auth" onclick="display(this)" id="my-profile">my profile</a>`),
-        createElementFromHTML(`<a href="#" class="nav-element auth" onclick="signOut();togglePopup('successfully signed out!', false);toggleLoginBlocked()" id="signout">sign out</a>`),
+        createElementFromHTML(`<a href="#" class="nav-element auth" onclick="display(this)" id="my-profile">Profilom</a>`),
+        createElementFromHTML(`<a href="#" class="nav-element auth" onclick="signOut();togglePopup('sikeresen kijelentkezél!', false);toggleLoginBlocked()" id="signout">kijelentkezés</a>`),
     ];
 
     let authButtons = document.querySelectorAll('.auth');
@@ -345,45 +345,38 @@ function setLoggedInButtons(loggedIn){
 }
 
 function handleResponse(data, type){
-    console.log(type);
-    sessionStorage.clear();
     if (type === 'register' || type === 'login'){
-            console.log('username is ' + data.username);
-            console.log("data's id is: " + data.id);
-            console.log("email is: " + data.email);
             sessionStorage.setItem('username', data.username);
             sessionStorage.setItem('id', data.id);
             sessionStorage.setItem('email', data.email);
-            console.log('logged in!');
             setLoggedInButtons(true);
             if (type === 'register')  {
-                togglePopup('account created successfully!', false);
+                togglePopup('Sikeres regisztráció!', false);
                 document.getElementById('register-username').value = '';
                 document.getElementById('register-email').value = '';
                 document.getElementById('register-password').value = '';
             }
             else if (type === 'login') {
-                togglePopup('logged in successfully!', false);
+                togglePopup('Sikeres bejelentkezés!', false);
                 document.getElementById('login-username').value = '';
                 document.getElementById('login-password').value = '';
             }
         toggleLoginBlocked();
         checkIfAdmin(data.id);
+        myProfileInit();
     }
 
     togglePopupType(false);
 
-    if(type === "reservation") togglePopup('reservation successfully reservated!', false);
-    if(type === "review") togglePopup('review successfully reviewed!', false);
+    if(type === "reservation") togglePopup('Sikeres foglalás!', false);
+    if(type === "review") togglePopup('Sikeres visszajelzés!', false);
     
     scrollToTopInstant();
-    //console.log(sessionStorage);
 }
 
 function addFetching(element, id){
     element.addEventListener('submit', async (event) => {
         event.preventDefault();
-        console.log(id);
         try {
             const response = await fetch(`http://localhost:8081/${id}`, {
                 method: "POST",
@@ -394,15 +387,12 @@ function addFetching(element, id){
             });
             
             const data = await response.json();
-            console.log("data is: ");
-            console.log(data);
 
             if (data.error){
                 togglePopup(data.error, true);
                 togglePopupType(false);
                 throw new Error(data.error)
             }else{
-                console.log("no error :)")
                 handleResponse(data, id);
             }
 
@@ -536,7 +526,6 @@ function checkIfAdmin(userId){
 
 
 function displayStarsForQuotes(value){
-    console.log(value);
     
     let stars = "";
     const before = Math.floor(value/2);
@@ -575,13 +564,10 @@ function myProfileInit(){
         userElementEmail.innerText = user.email;
 
         const list = document.getElementById("reservation-list");
-        console.log("reached this");
-        console.log(list);
         
         let usersReservations = [];
         
         for (let i = 0; i < reservations.length; i++) if(reservations[i].user_id == userId) usersReservations.push(reservations[i]);
-        else console.log(`${reservations[i].user_id} is not ${userId}`);
         
         if (usersReservations.length > 0) for(let i = 0; i < usersReservations.length; i++) list.innerHTML += `
         <div class="reservation-item" id="reservation-item${i+1}">
@@ -618,7 +604,6 @@ async function deleteThis(deletedId, typeOf) {
         const data = await response.json().catch(() => null);
         if (data?.error) throw new Error(data.error);
 
-        console.log("Item deleted successfully");
         sessionStorage.setItem("loadPlease", (typeOf + "s"));
         window.location.reload();
 

@@ -10,16 +10,16 @@ SERVER{
         12-15 felhasználó                                                           .pipa
         3-5 csoport                                                                 .pipa
         2-10 OU                                                                     .pipa
-        Minden gép (kliens) regisztrálása az AD-ben                                 .pipa?FERDI
+        Minden gép (kliens) regisztrálása az AD-ben                                 .pipa
         4-10 GPO implementálása                                                     .pipa
         Felhasználók idejének korlátozása                                           .pipa
-        jogosultságuk korlátozása a céges policy szerint (maguk határozzák meg)     .FERDI
-        Home könyvtár                                                               .pipa?FERDI
-        felcsatolt meghajtók létrehozása                                            .FERDIIIIIIIIIIIII
+        jogosultságuk korlátozása a céges policy szerint (maguk határozzák meg)     .pipa
+        Home könyvtár                                                               .pipa
+        felcsatolt meghajtók létrehozása                                            .pipa
     }
-    DNS                                                                             .pipa?
-    DHCP                                                                            .FERDI
-    FTP/TFTP                                                                        .FERDI
+    DNS                                                                             .pipa
+    DHCP                                                                            .pipa
+    FTP/TFTP                                                                        .pipa
 }
 TESTING{
     WEBSITE                                                                         .ferdi
@@ -69,7 +69,6 @@ dokumentáció{
     }
     weboldal{
         elvárások
-        dependenciák
         használt stack
         setup
         github
