@@ -345,6 +345,7 @@ function setLoggedInButtons(loggedIn){
 }
 
 function handleResponse(data, type){
+    //sessionStorage.clear();
     if (type === 'register' || type === 'login'){
             sessionStorage.setItem('username', data.username);
             sessionStorage.setItem('id', data.id);

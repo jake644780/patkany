@@ -34,6 +34,9 @@
             <p>nyomd meg az egyik gombot hogy kilistázza az adott elemeket!</p>
             <!-- Output for data -->
             <div id="output">adatok helyje</div>
+            <div id="output">
+                ha lesz adat, az itt lesz...
+            </div>
         </div>
     </div>
 
@@ -61,7 +64,6 @@
     //     fetch(`http://localhost:8081/getall/${ids[i]}`)
     //         .then(response => response.json())
     //         .then(data => {
-    //             console.log(data);
     //             dataList.push(data);
     //         })
     //         .catch(error => {console.error('Error fetching data:', error);});
@@ -73,7 +75,6 @@ for (let i = 0; i < 3; i++) {
     let fetchPromise = fetch(`http://localhost:8081/getall/${ids[i]}`)
         .then(response => response.json())
         .then(data => {
-            console.log(data);
             dataList.push(data);
         })
         .catch(error => {console.error('Error fetching data:', error);});
@@ -84,13 +85,11 @@ for (let i = 0; i < 3; i++) {
 // Wait for all fetch requests to finish before continuing
 Promise.all(fetchPromises).then(() => {
     // Code here will run after all fetch requests are complete
-    console.log("All data fetched.");
     // Continue with the rest of your code...
 });
 
 
     Promise.all(fetchPromises).then(() => {
-        console.log("All data fetched.");
     });
     
     let buttons = document.querySelectorAll(".admin-fetch");
@@ -99,7 +98,6 @@ Promise.all(fetchPromises).then(() => {
         if(dataList[idGetting(buttons[i].id)]) handleDisplay(dataList[idGetting(buttons[i].id)], buttons[i].id);
     });
 
-    console.log(dataList);
 
 
 
@@ -137,7 +135,6 @@ Promise.all(fetchPromises).then(() => {
         `;
         else if (buttonId === "reviews") for (let i = 0; i < data.length; i++) {
             const value = data[i].rating; 
-            console.log(value);
             
             let stars = "";
             const before = Math.floor(value/2);
@@ -184,7 +181,9 @@ Promise.all(fetchPromises).then(() => {
                 </div>
             </div>
         `;
-        
+        if(inner === ''){
+            inner = "ha lesz adat, az itt lesz...";
+        }
         outputDiv.innerHTML = inner;
         lookForUndefined();
     }
@@ -226,7 +225,6 @@ Promise.all(fetchPromises).then(() => {
             const data = await response.json().catch(() => null);
             if (data?.error) throw new Error(data.error);
 
-            console.log("Item deleted successfully");
             sessionStorage.setItem("loadPlease", (typeOf + "s"));
             window.location.reload();
 
