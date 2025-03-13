@@ -49,7 +49,7 @@ function display(pressed){
 }
 
 function displayWithCheck(pressed){
-    if (pressed.classList.contains('login-blocked'))alert('loginolj te fa hogy tudj ilyet!');
+    if (pressed.classList.contains('login-blocked'))alert('jelentkezz be hogy ezt a featúrát elérd!');
     else display(pressed);
 }
 
