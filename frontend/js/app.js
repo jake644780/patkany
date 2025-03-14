@@ -110,7 +110,7 @@ const fetchPromises = [];
 
 for (let i = 0; i < 3; i++) {
     fetchPromises.push(
-        fetch(`http://localhost:8081/getall/${ids[i]}`)
+        fetch(`http://51.21.220.73:8081/getall/${ids[i]}`)
             .then(response => response.json())
             .then(data => {
                 window.dataList[i] = data; // Store fetched data at the correct index

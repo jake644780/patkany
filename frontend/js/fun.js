@@ -379,7 +379,7 @@ function addFetching(element, id){
     element.addEventListener('submit', async (event) => {
         event.preventDefault();
         try {
-            const response = await fetch(`http://localhost:8081/${id}`, {
+            const response = await fetch(`http://51.21.220.73:8081/${id}`, {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
@@ -589,7 +589,7 @@ function timeFormatting(time){
 
 async function deleteThis(deletedId, typeOf) {
     try {
-        const response = await fetch(`http://localhost:8081/delete`, {
+        const response = await fetch(`http://51.21.220.73:8081/delete`, {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",

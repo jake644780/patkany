@@ -61,7 +61,7 @@
 
     //GETTING ALL DATA
     // for (let i = 0; i < 3; i++) {
-    //     fetch(`http://localhost:8081/getall/${ids[i]}`)
+    //     fetch(`http://51.21.220.73:8081/getall/${ids[i]}`)
     //         .then(response => response.json())
     //         .then(data => {
     //             dataList.push(data);
@@ -72,7 +72,7 @@
     let fetchPromises = [];
 
 for (let i = 0; i < 3; i++) {
-    let fetchPromise = fetch(`http://localhost:8081/getall/${ids[i]}`)
+    let fetchPromise = fetch(`http://51.21.220.73:8081/getall/${ids[i]}`)
         .then(response => response.json())
         .then(data => {
             dataList.push(data);
@@ -209,7 +209,7 @@ Promise.all(fetchPromises).then(() => {
 
     async function deleteThis(deletedId, typeOf) {
         try {
-            const response = await fetch(`http://localhost:8081/delete`, {
+            const response = await fetch(`http://51.21.220.73:8081/delete`, {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
